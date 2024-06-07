@@ -6,18 +6,14 @@ variable "event_name" {
   }
 }
 
-variable "workspace_name" {
-  type = string
+variable "participants" {
+  type = map(any)
   validation {
-    condition     = can(regex("^[-a-zA-Z0-9_]+$", var.workspace_name))
-    error_message = "Workspace name must only contain alphanumeric characters, dashes, and underscores."
+    condition     = can(alltrue([for value in values(var.participants) : contains(keys(value), "team")]))
+    error_message = "Each participant must have a 'team' key."
   }
 }
 
-variable "team_name" {
+variable "hcp_terraform_project" {
   type = string
-  validation {
-    condition     = can(regex("^[-a-zA-Z0-9_]+$", var.team_name))
-    error_message = "Team name must only contain alphanumeric characters, dashes, and underscores."
-  }
 }

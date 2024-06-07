@@ -1,7 +1,11 @@
-output "workspace" {
-  value = tfe_workspace.challenge.name
+output "workspaces" {
+  value = {
+    for key, value in var.participants : key => tfe_workspace.challenges[key].name
+  }
 }
 
-output "team_token" {
-  value = tfe_team_token.participant.token
+output "team_tokens" {
+  value = {
+    for key, value in var.participants : key => tfe_team_token.participants[key].token
+  }
 }
