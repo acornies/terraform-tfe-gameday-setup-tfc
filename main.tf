@@ -9,11 +9,6 @@ terraform {
 
 data "tfe_organization" "event" {}
 
-data "tfe_project" "event" {
-  name         = var.hcp_terraform_project
-  organization = data.tfe_organization.event.name
-}
-
 resource "tfe_team" "participants" {
   for_each     = var.participants
   organization = data.tfe_organization.event.name
@@ -27,7 +22,6 @@ resource "tfe_workspace" "challenges" {
   name         = each.key
   organization = data.tfe_organization.event.name
   tag_names    = ["${var.event_name}"]
-  project_id   = data.tfe_project.event.id
 }
 
 # Add team admin access to workspace
